@@ -15,6 +15,17 @@ public class CreateProductAction implements Action {
 
     @Override
     public void execute() {
+        Product product = new Product();
+        enterTerminalToFillProductFields(product);
+        try {
+            Long response = productService.create(product);
+            System.out.println("Response: " + response);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void enterTerminalToFillProductFields(Product product) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter product name:");
         String name = scanner.nextLine();
@@ -30,19 +41,11 @@ public class CreateProductAction implements Action {
         System.out.println("Enter product description: ");
         String description = scanner.nextLine();
 
-        Product product = new Product();
         product.setName(name);
         product.setCategory(category);
         product.setPrice(new BigDecimal(price));
         product.setDiscount(new BigDecimal(discount));
         product.setDescription(description);
-
-        try {
-            Long response = productService.create(product);
-            System.out.println("Response: " + response);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public void validateProductName(String name) {
